@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@nil-/xit": ["gui/server/xit"],
+      "@nil-/xit/*": ["gui/server/xit/*"]
+    },
+    "moduleResolution": "node",
+    "target": "ES2020",
+    "allowJs": true
+  },
+  "include": ["gui/**/*", "*.svelte", "*.ts", "*.js"]
+}
