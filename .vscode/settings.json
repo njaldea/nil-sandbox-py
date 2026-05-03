@@ -14,6 +14,5 @@
     "CMakeLists.txt": "CMakePresets.json"
   },
   "editor.stickyScroll.defaultModel": "foldingProviderModel",
-  "gitlens.codeLens.enabled": false,
-  "python.REPL.enableREPLSmartSend": false
+  "gitlens.codeLens.enabled": false
 }

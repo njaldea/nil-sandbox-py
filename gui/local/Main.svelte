@@ -6,3 +6,4 @@
 </script>
 
 <input bind:value={$text}/>
+<a href="/?frame=plotly">ploty frame</a>
