@@ -1,9 +1,11 @@
-<script lang="ts">
-    import { codec_string, xit } from "@nil-/xit";
+<div>
+    <a href="/?frame=plotly">ploty frame</a>
+    <a href="/?frame=json_editor">json_editor</a>
+</div>
 
-    const { values } = xit();
-    const text = values("text", "default_value", codec_string);
-</script>
-
-<input bind:value={$text}/>
-<a href="/?frame=plotly">ploty frame</a>
+<style>
+    div {
+        display: flex;
+        flex-direction: column;
+    }
+</style>

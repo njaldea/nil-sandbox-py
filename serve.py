@@ -6,14 +6,6 @@ import signal
 import json
 from typing import Any
 
-def add_value(frame: nil_xit.UniqueFrame, id: str, value: bytes):
-    ref = [value]
-    def get():
-        return ref[0]
-    def set(v: bytes):
-        ref[0] = v
-    return frame.add_value(id, get, set)
-
 def add_json_value(frame: nil_xit.UniqueFrame, id: str, value: Any):
     ref = [json.dumps(value).encode()]
     def get():
@@ -44,11 +36,18 @@ def serve(port: int):
     xit.set_cache_directory("/tmp/sandbox")
     xit.set_groups({ "local": "gui/local" })
 
-    index_frame = xit.add_unique_frame("index", "$local/Main.svelte")
-    add_value(index_frame, "text", b"hello world")
+    xit.add_unique_frame("index", "$local/Main.svelte")
 
     plotly_frame = xit.add_unique_frame("plotly", "$local/PlotlyFrame.svelte")
     add_json_value(plotly_frame, "data", [{
+        "x": ["Apples", "Bananas", "Cherries"],
+        "y": [10, 15, 8],
+        "type": "bar",
+        "marker": { "color": 'rgb(99, 255, 132)' }
+    }])
+    
+    json_editor_frame = xit.add_unique_frame("json_editor", "$local/JSONEditorFrame.svelte")
+    add_json_value(json_editor_frame, "data", [{
         "x": ["Apples", "Bananas", "Cherries"],
         "y": [10, 15, 8],
         "type": "bar",
