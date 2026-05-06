@@ -1,9 +1,0 @@
-<script lang="ts">
-    import { codec_json_from_string, xit } from "@nil-/xit";
-    import Plotly from "$local/comp/Plotly.svelte";
-
-    const { values } = xit();
-    const data = values("data", [] as Plotly.Data[], codec_json_from_string);
-</script>
-
-<Plotly data={$data}></Plotly>

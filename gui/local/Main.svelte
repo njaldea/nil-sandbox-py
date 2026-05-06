@@ -1,6 +1,6 @@
 <div>
-    <a href="/?frame=plotly">ploty frame</a>
-    <a href="/?frame=json_editor">json_editor</a>
+    <a href={`${location.href}?frame=plotly`}>ploty frame</a>
+    <a href={`${location.href}?frame=json_editor`}>json_editor</a>
 </div>
 
 <style>

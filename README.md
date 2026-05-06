@@ -1,9 +1,10 @@
 # sandboxpy
 
-## install
+## setup
 
-> pip install nil-xit nil-clix nil-gate nil-service
+pip install -r pip.txt
+python main.py -p 1101
 
-## uninstall
+## cleanup
 
-> pip uninstall nil-xit nil-clix nil-gate nil-service -y
+pip uninstall -r pip.txt

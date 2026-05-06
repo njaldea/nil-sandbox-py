@@ -11,12 +11,13 @@ def main():
             print(option.help()[:-1])
             return 0
 
-        serve.serve(option.number("port"))
+        serve.serve(option.number("port"), option.flag("detached"))
         print()
         return 0
 
     node = nil_clix.create_node()
     node.flag("help", "h", "show this help")
+    node.flag("detached", "d", "run ws only")
     node.number("port", "p", "use as port", fallback=0)
     node.use(root_node_exec)
     return node.run(sys.argv[1:])
