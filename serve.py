@@ -1,19 +1,44 @@
 import nil_service
 import nil_xit
 
-import os
 import signal
 import json
-from typing import Any
 
-def add_json_value(frame: nil_xit.UniqueFrame, id: str, value: Any):
-    ref = [json.dumps(value).encode()]
-    def get():
-        return ref[0]
-    def set(v: bytes):
-        ref[0] = v
-        print(json.loads(v.decode()))
-    return frame.add_value(id, get, set)
+class JSONValue:
+    """
+    Convenience wrapper for JSON-encoded frame values.
+
+    nil-xit itself is serialization-agnostic.
+    This helper simply layers JSON encoding on top
+    of the raw payload synchronization API.
+    """
+    def __init__(self, frame: nil_xit.UniqueFrame | nil_xit.TaggedFrame, id: str, data):
+        self.data= json.dumps(data).encode()
+        self.frame = frame
+
+        def get():
+            return self.data
+
+        def set(data):
+            print(f"Received data: {data.decode()}")
+            self.data = data
+        
+        self.value = self.frame.add_value(id, get, set)
+
+    def post(self, data):
+        self.value.post(data)
+
+def server_run(server: nil_service.Runnable):
+    break_server_polling = False
+    def sig_int(signum, frame):
+        nonlocal break_server_polling
+        break_server_polling = True
+    signal.signal(signal.SIGINT, sig_int)
+    
+    # need to poll since signal handler wont be called
+    # unless thread is yielded to python
+    while not break_server_polling:
+        server.poll()
 
 def create_server(port: int, ws_only: bool):
     if ws_only:
@@ -24,13 +49,39 @@ def create_server(port: int, ws_only: bool):
     nil_xit.setup_server(server, [ "gui/node_modules/@nil-/xit/assets" ])
     return [server, server.use_ws("/ws")]
 
-def serve(port: int, ws_only: bool):
-    break_server_polling = False
-    def sig_int(signum, frame):
-        nonlocal break_server_polling
-        break_server_polling = True
-    signal.signal(signal.SIGINT, sig_int)
+def create_index_frame(xit: nil_xit.Core):
+    index_frame = xit.add_unique_frame("index", nil_xit.FileInfo("local", "Main.svelte"))
 
+    def on_click(data):
+        print(f"clicked: {data.decode()}")
+
+    index_frame.add_signal("click", on_click)
+    return index_frame
+
+def create_plotly_frame(xit: nil_xit.Core):
+    plotly_frame = xit.add_unique_frame("plotly", nil_xit.FileInfo("local", "Component.svelte"))
+    plotly_frame.add_option("component", "$local/comp/Plotly.svelte")
+    plotly_value = JSONValue(plotly_frame, "data", [{
+        "x": ["Apples", "Bananas", "Cherries"],
+        "y": [10, 15, 8],
+        "type": "bar",
+        "marker": { "color": 'rgb(99, 255, 132)' }
+    }])
+
+    return plotly_frame, plotly_value
+
+def create_json_editor_frame(xit: nil_xit.Core):
+    json_editor_frame = xit.add_unique_frame("json_editor", nil_xit.FileInfo("local", "Component.svelte"))
+    json_editor_frame.add_option("component", "$local/comp/JSONEditor.svelte")
+    json_editor_value = JSONValue(json_editor_frame, "data", [{
+        "x": ["Apples", "Bananas", "Cherries"],
+        "y": [10, 15, 8],
+        "type": "bar",
+        "marker": { "color": 'rgb(99, 255, 132)' }
+    }])
+    return json_editor_frame, json_editor_value
+
+def serve(port: int, ws_only: bool):
     server, ws = create_server(port, ws_only)
 
     @server.on_ready
@@ -41,28 +92,9 @@ def serve(port: int, ws_only: bool):
     # xit.set_cache_directory("/tmp/sandbox")
     xit.set_groups({ "local": "gui/local" })
 
-    xit.add_unique_frame("index", nil_xit.FileInfo("local", "Main.svelte"))
+    index = create_index_frame(xit)
+    plotly = create_plotly_frame(xit)
+    json_editor = create_json_editor_frame(xit)
 
-    plotly_frame = xit.add_unique_frame("plotly", nil_xit.FileInfo("local", "Component.svelte"))
-    plotly_frame.add_option("component", "$local/comp/Plotly.svelte")
-    add_json_value(plotly_frame, "data", [{
-        "x": ["Apples", "Bananas", "Cherries"],
-        "y": [10, 15, 8],
-        "type": "bar",
-        "marker": { "color": 'rgb(99, 255, 132)' }
-    }])
-    
-    json_editor_frame = xit.add_unique_frame("json_editor", nil_xit.FileInfo("local", "Component.svelte"))
-    json_editor_frame.add_option("component", "$local/comp/JSONEditor.svelte")
-    add_json_value(json_editor_frame, "data", [{
-        "x": ["Apples", "Bananas", "Cherries"],
-        "y": [10, 15, 8],
-        "type": "bar",
-        "marker": { "color": 'rgb(99, 255, 132)' }
-    }])
-
-    # need to poll since signal handler wont be called
-    # unless thread is yielded to python
-    while not break_server_polling:
-        server.poll()
+    server_run(server)
     xit.destroy()
