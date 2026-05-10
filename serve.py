@@ -58,28 +58,26 @@ def create_index_frame(xit: nil_xit.Core):
     index_frame.add_signal("click", on_click)
     return index_frame
 
-def create_plotly_frame(xit: nil_xit.Core):
-    plotly_frame = xit.add_unique_frame("plotly", nil_xit.FileInfo("local", "Component.svelte"))
-    plotly_frame.add_option("component", "$local/comp/Plotly.svelte")
-    plotly_value = JSONValue(plotly_frame, "data", [{
+def create_data_frame(xit: nil_xit.Core):
+    data_frame = xit.add_unique_frame("data")
+    data_value = JSONValue(data_frame, "data", [{
         "x": ["Apples", "Bananas", "Cherries"],
         "y": [10, 15, 8],
         "type": "bar",
         "marker": { "color": 'rgb(99, 255, 132)' }
     }])
 
-    return plotly_frame, plotly_value
+    return data_frame, data_value
+
+def create_plotly_frame(xit: nil_xit.Core):
+    plotly_frame = xit.add_unique_frame("plotly", nil_xit.FileInfo("local", "Component.svelte"))
+    plotly_frame.add_option("component", "$local/comp/Plotly.svelte")
+    return plotly_frame
 
 def create_json_editor_frame(xit: nil_xit.Core):
     json_editor_frame = xit.add_unique_frame("json_editor", nil_xit.FileInfo("local", "Component.svelte"))
     json_editor_frame.add_option("component", "$local/comp/JSONEditor.svelte")
-    json_editor_value = JSONValue(json_editor_frame, "data", [{
-        "x": ["Apples", "Bananas", "Cherries"],
-        "y": [10, 15, 8],
-        "type": "bar",
-        "marker": { "color": 'rgb(99, 255, 132)' }
-    }])
-    return json_editor_frame, json_editor_value
+    return json_editor_frame
 
 def serve(port: int, ws_only: bool):
     server, ws = create_server(port, ws_only)
@@ -89,10 +87,11 @@ def serve(port: int, ws_only: bool):
         print(f"http://{id.to_string()}")
 
     xit = nil_xit.create_core(server, ws)
-    # xit.set_cache_directory("/tmp/sandbox")
+    xit.set_cache_directory("/tmp/sandbox")
     xit.set_groups({ "local": "gui/local" })
 
     index = create_index_frame(xit)
+    data = create_data_frame(xit)
     plotly = create_plotly_frame(xit)
     json_editor = create_json_editor_frame(xit)
 
