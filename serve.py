@@ -12,7 +12,7 @@ class JSONValue:
     This helper simply layers JSON encoding on top
     of the raw payload synchronization API.
     """
-    def __init__(self, frame: nil_xit.UniqueFrame | nil_xit.TaggedFrame, id: str, data):
+    def __init__(self, frame: nil_xit.UniqueFrame, id: str, data):
         self.data= json.dumps(data).encode()
         self.frame = frame
 
@@ -24,9 +24,6 @@ class JSONValue:
             self.data = data
         
         self.value = self.frame.add_value(id, get, set)
-
-    def post(self, data):
-        self.value.post(data)
 
 def server_run(server: nil_service.Runnable):
     break_server_polling = False
@@ -87,7 +84,7 @@ def serve(port: int, ws_only: bool):
         print(f"http://{id.to_string()}")
 
     xit = nil_xit.create_core(server, ws)
-    xit.set_cache_directory("/tmp/sandbox")
+    # xit.set_cache_directory("/tmp/sandbox")
     xit.set_groups({ "local": "gui/local" })
 
     index = create_index_frame(xit)
