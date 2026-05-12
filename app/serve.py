@@ -3,6 +3,7 @@ import nil_xit
 
 import signal
 import json
+from pathlib import Path
 
 class JSONValue:
     """
@@ -43,16 +44,12 @@ def create_server(port: int, ws_only: bool):
         return [server, server]
 
     server = nil_service.create_http_server("127.0.0.1", port, 100 * 1024 * 1024)
-    nil_xit.setup_server(server, [ "gui/node_modules/@nil-/xit/assets" ])
+    nil_xit.setup_server(server, [ f"{Path(__file__).resolve().parent}/gui/node_modules/@nil-/xit/assets" ])
     return [server, server.use_ws("/ws")]
 
 def create_index_frame(xit: nil_xit.Core):
     index_frame = xit.add_unique_frame("index", nil_xit.FileInfo("local", "Main.svelte"))
-
-    def on_click(data):
-        print(f"clicked: {data.decode()}")
-
-    index_frame.add_signal("click", on_click)
+    index_frame.add_signal("click", lambda data: print(f"clicked: {data.decode()}"))
     return index_frame
 
 def create_data_frame(xit: nil_xit.Core):
@@ -79,13 +76,11 @@ def create_json_editor_frame(xit: nil_xit.Core):
 def serve(port: int, ws_only: bool):
     server, ws = create_server(port, ws_only)
 
-    @server.on_ready
-    def server_ready(id: nil_service.ID):
-        print(f"http://{id.to_string()}")
+    server.on_ready(lambda id: f"http://{id.to_string()}")
 
     xit = nil_xit.create_core(server, ws)
     # xit.set_cache_directory("/tmp/sandbox")
-    xit.set_groups({ "local": "gui/local" })
+    xit.set_groups({ "local": f"{Path(__file__).resolve().parent}/gui/local" })
 
     index = create_index_frame(xit)
     data = create_data_frame(xit)
