@@ -18,6 +18,7 @@
 	},
 	"dependencies": {
 		"@nil-/xit": "^0.4.27",
+		"@types/desmos": "^1.11.0",
 		"@types/plotly.js": "^3.0.10",
 		"vanilla-jsoneditor": "^3.12.0"
 	}

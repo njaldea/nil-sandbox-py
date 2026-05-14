@@ -53,30 +53,35 @@ def create_index_frame(xit: nil_xit.Core):
     return index_frame
 
 def create_data_frame(xit: nil_xit.Core):
-    data_frame = xit.add_unique_frame("data")
-    data_value = JSONValue(data_frame, "data", [{
+    frame = xit.add_unique_frame("data")
+    value = JSONValue(frame, "data", [{
         "x": ["Apples", "Bananas", "Cherries"],
         "y": [10, 15, 8],
         "type": "bar",
         "marker": { "color": 'rgb(99, 255, 132)' }
     }])
 
-    return data_frame, data_value
+    return frame, value
 
 def create_plotly_frame(xit: nil_xit.Core):
-    plotly_frame = xit.add_unique_frame("plotly", nil_xit.FileInfo("local", "Component.svelte"))
-    plotly_frame.add_option("component", "$local/comp/Plotly.svelte")
-    return plotly_frame
+    frame = xit.add_unique_frame("plotly", nil_xit.FileInfo("local", "SharedComponent.svelte"))
+    frame.add_option("component", "$local/comp/Plotly.svelte")
+    return frame
 
 def create_json_editor_frame(xit: nil_xit.Core):
-    json_editor_frame = xit.add_unique_frame("json_editor", nil_xit.FileInfo("local", "Component.svelte"))
-    json_editor_frame.add_option("component", "$local/comp/JSONEditor.svelte")
-    return json_editor_frame
+    frame = xit.add_unique_frame("json_editor", nil_xit.FileInfo("local", "SharedComponent.svelte"))
+    frame.add_option("component", "$local/comp/JSONEditor.svelte")
+    return frame
+
+def create_desmos_frame(xit: nil_xit.Core):
+    frame = xit.add_unique_frame("desmos", nil_xit.FileInfo("local", "Component.svelte"))
+    frame.add_option("component", "$local/comp/Desmos.svelte")
+    value = JSONValue(frame, "data", [{ "id": "1", "type": "expression", "latex": "x = y / 2" }])
+    return frame, value
 
 def serve(port: int, ws_only: bool):
     server, ws = create_server(port, ws_only)
-
-    server.on_ready(lambda id: f"http://{id.to_string()}")
+    server.on_ready(lambda id: print(f"http://{id.to_string()}"))
 
     xit = nil_xit.create_core(server, ws)
     # xit.set_cache_directory("/tmp/sandbox")
@@ -86,6 +91,7 @@ def serve(port: int, ws_only: bool):
     data = create_data_frame(xit)
     plotly = create_plotly_frame(xit)
     json_editor = create_json_editor_frame(xit)
+    desmos = create_desmos_frame(xit)
 
     server_run(server)
     xit.destroy()
