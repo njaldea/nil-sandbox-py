@@ -65,17 +65,17 @@ def create_data_frame(xit: nil_xit.Core):
 
 def create_plotly_frame(xit: nil_xit.Core):
     frame = xit.add_unique_frame("plotly", nil_xit.FileInfo("local", "SharedComponent.svelte"))
-    frame.add_option("component", "$local/comp/Plotly.svelte")
+    frame.add_option("component", "@nil-/xit/components/3pt/Plotly.svelte")
     return frame
 
 def create_json_editor_frame(xit: nil_xit.Core):
     frame = xit.add_unique_frame("json_editor", nil_xit.FileInfo("local", "SharedComponent.svelte"))
-    frame.add_option("component", "$local/comp/JSONEditor.svelte")
+    frame.add_option("component", "@nil-/xit/components/3pt/JSONEditor.svelte")
     return frame
 
 def create_desmos_frame(xit: nil_xit.Core):
     frame = xit.add_unique_frame("desmos", nil_xit.FileInfo("local", "Component.svelte"))
-    frame.add_option("component", "$local/comp/Desmos.svelte")
+    frame.add_option("component", "@nil-/xit/components/3pt/Desmos.svelte")
     value = JSONValue(frame, "data", [{ "id": "1", "type": "expression", "latex": "x = y / 2" }])
     return frame, value
 

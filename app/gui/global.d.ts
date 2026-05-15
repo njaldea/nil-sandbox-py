@@ -1,30 +1,34 @@
-/// <reference types="plotly.js" />
-/// <reference types="vanilla-jsoneditor" />
-/// <reference types="desmos" />
+// declare here the types and aliases for modules that are downloaded from the net
+// only applicable for local components importing public modules.
+// here is an example to allow typing for plotly/vanillajsoneditor/desmos
 
-declare module "desmos" {
-    export = Desmos;
-}
+// /// <reference types="plotly.js" />
+// /// <reference types="vanilla-jsoneditor" />
+// /// <reference types="desmos" />
 
-interface Window {
-    Plotly: typeof import('plotly.js');
-}
+// declare module "desmos" {
+//     export = Desmos;
+// }
 
-declare const Desmos: typeof import('desmos');
+// interface Window {
+//     Plotly: typeof import('plotly.js');
+// }
 
-declare module "https://cdn.jsdelivr.net/npm/vanilla-jsoneditor@3.12.0/standalone.min.js" {
-    export { createJSONEditor } from "vanilla-jsoneditor";
-}
+// declare const Desmos: typeof import('desmos');
 
-declare module "https://cdn.plot.ly/plotly-3.4.0.min.js" {
-    const Plotly: typeof import("plotly.js");
-    export default Plotly;
-}
+// declare module "https://cdn.jsdelivr.net/npm/vanilla-jsoneditor@3.12.0/standalone.min.js" {
+//     export { createJSONEditor } from "vanilla-jsoneditor";
+// }
 
-declare module "https://unpkg.com/desmos@1.5.4/index.js" {
-    const Desmos: typeof import("desmos");
-    export default Desmos;
-}
+// declare module "https://cdn.plot.ly/plotly-3.4.0.min.js" {
+//     const Plotly: typeof import("plotly.js");
+//     export default Plotly;
+// }
 
-// Do NOT use 'export {}' if you want this file to stay in the global scope
-// for your manual script tags.
+// declare module "https://unpkg.com/desmos@1.5.4/index.js" {
+//     const Desmos: typeof import("desmos");
+//     export default Desmos;
+// }
+
+// // Do NOT use 'export {}' if you want this file to stay in the global scope
+// // for your manual script tags.
