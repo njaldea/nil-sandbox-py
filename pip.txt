@@ -1,4 +1,4 @@
 nil_clix>=1.0.10
 nil_gate>=1.6.8
 nil_service>=1.0.18
-nil_xit>=0.3.12
+nil_xit>=0.3.14
