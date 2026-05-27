@@ -10,14 +10,14 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^7.0.1",
-		"@sveltejs/kit": "^2.60.1",
+		"@sveltejs/kit": "^2.61.1",
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
-		"svelte": "^5.55.7",
+		"svelte": "^5.55.9",
 		"typescript": "^6.0.3",
-		"vite": "^8.0.13"
+		"vite": "^8.0.14"
 	},
 	"dependencies": {
-		"@nil-/xit": "^0.4.30",
+		"@nil-/xit": "^0.4.31",
 		"@types/desmos": "^1.11.0",
 		"@types/plotly.js": "^3.0.10",
 		"vanilla-jsoneditor": "^3.12.0"
