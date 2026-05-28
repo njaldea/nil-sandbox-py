@@ -44,7 +44,7 @@ def create_server(port: int, ws_only: bool):
         return [server, server]
 
     server = nil_service.create_http_server("127.0.0.1", port, 100 * 1024 * 1024)
-    nil_xit.setup_server(server)
+    nil_xit.setup_svelte_server(server)
     return [server, server.use_ws("/ws")]
 
 def create_index_frame(xit: nil_xit.Core):
