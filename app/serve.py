@@ -21,6 +21,8 @@ class JSONValue:
             return self.data
 
         def set(data):
+            if data == self.data:
+                return
             print(f"Received data: {data.decode()}")
             self.data = data
         
@@ -79,6 +81,16 @@ def create_desmos_frame(xit: nil_xit.Core):
     value = JSONValue(frame, "data", [{ "id": "1", "type": "expression", "latex": "x = y / 2" }])
     return frame, value
 
+def create_doc_frame(xit: nil_xit.Core):
+    frame = xit.add_unique_frame("doc", nil_xit.FileInfo("local", "Doc.svelte"))
+    frames_map = {
+        "/desmos": ["desmos"],
+        "/graph/plotly": ["plotly"],
+        "/graph/json_editor": ["json_editor"],
+    }
+    value = JSONValue(frame, "frames", frames_map)
+    return frame, value
+
 def serve(port: int, ws_only: bool):
     server, ws = create_server(port, ws_only)
     server.on_ready(lambda id: print(f"http://{id.to_string()}"))
@@ -92,6 +104,8 @@ def serve(port: int, ws_only: bool):
     plotly = create_plotly_frame(xit)
     json_editor = create_json_editor_frame(xit)
     desmos = create_desmos_frame(xit)
+
+    doc = create_doc_frame(xit)
 
     server_run(server)
     xit.destroy()

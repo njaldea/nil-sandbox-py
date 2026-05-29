@@ -17,6 +17,7 @@
 		"vite": "^8.0.14"
 	},
 	"dependencies": {
+		"@nil-/doc": "^2.0.1",
 		"@nil-/xit": "^0.4.31",
 		"@types/desmos": "^1.11.0",
 		"@types/plotly.js": "^3.0.10",

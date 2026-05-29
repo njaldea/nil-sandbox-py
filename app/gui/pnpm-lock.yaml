@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@nil-/doc':
+        specifier: ^2.0.1
+        version: 2.0.1(svelte@5.55.9)
       '@nil-/xit':
         specifier: ^0.4.31
         version: 0.4.31(svelte@5.55.9)
@@ -139,6 +142,11 @@ packages:
     peerDependencies:
       '@emnapi/core': ^1.7.1
       '@emnapi/runtime': ^1.7.1
+
+  '@nil-/doc@2.0.1':
+    resolution: {integrity: sha512-hih+36cM5pjLbeCKAlAU6DmicJqm8AwNs3OieTWlk1Rr8nyuNUI8gs/jqNSkmF3vLA1rqYA79GJ/9K5qyJCUEw==}
+    peerDependencies:
+      svelte: ^5.7.1
 
   '@nil-/xit@0.4.31':
     resolution: {integrity: sha512-iPZB8wnkvTTJTKHqQ16GaSFOnLh5ASB7KrLFosR5RetFAU2qMci1+JWJ2Wz6JUI2WSgZ1DXd/Nx9fbUG58ptcQ==}
@@ -891,6 +899,11 @@ snapshots:
       '@emnapi/runtime': 1.10.0
       '@tybys/wasm-util': 0.10.2
     optional: true
+
+  '@nil-/doc@2.0.1(svelte@5.55.9)':
+    dependencies:
+      svelte: 5.55.9
+      vanilla-picker: 2.12.3
 
   '@nil-/xit@0.4.31(svelte@5.55.9)':
     dependencies:
