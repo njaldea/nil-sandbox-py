@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Layout } from "@nil-/doc";
+    import Layout from "@nil-/doc/layout/Layout.svelte";
     
     import { xit, codec_json_from_string, type Action } from "@nil-/xit";
 
@@ -7,10 +7,12 @@
     let data = values("frames", {} as any, codec_json_from_string);
     let current = $state(null) as string | null;
     let frame_action = $state(null) as Action<HTMLElement> | null;
-    let onnavigate = (e: { detail: string }) => {
-        frame_action = null;
-        current = e.detail;
-        load_frame_ui($data[e.detail][0] ?? "").then(v => (frame_action = v));
+    let onnavigate = (e: { detail?: string }) => {
+        if (e.detail != null) {
+            frame_action = null;
+            current = e.detail;
+            load_frame_ui($data[e.detail][0] ?? "").then(v => (frame_action = v));
+        }
     };
 
 </script>
