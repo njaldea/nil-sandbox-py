@@ -11,6 +11,7 @@
     <a href={`${location.href}?frame=plotly`}>ploty frame</a>
     <a href={`${location.href}?frame=json_editor`}>json_editor</a>
     <a href={`${location.href}?frame=desmos`}>desmos</a>
+    <a href={`${location.href}?frame=doc`}>doc</a>
 </div>
 
 <style>

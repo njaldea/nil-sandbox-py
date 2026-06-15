@@ -35,7 +35,6 @@
 
 <style>
     div {
-        display: flex;
-        width: 100%;
+        display: contents;
     }
 </style>
